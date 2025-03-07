@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Community</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            text-align: center;
+            padding: 20px;
+        }
+        .chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-messages {
+            height: 250px;
+            overflow-y: auto;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        .message {
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            max-width: 80%;
+        }
+        .user-message {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+        }
+        .bot-message {
+            background-color: #e0e0e0;
+            color: black;
+            align-self: flex-start;
+        }
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+            background: #f9f9f9;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+        .chat-input button {
+            margin-left: 10px;
+            padding: 8px 12px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Benvenuto nella Customer Community</h1>
+    <p>Connettiti con altri utenti e ottieni supporto in tempo reale attraverso la nostra chat!</p>
+    
+    <div class="chat-container">
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Scrivi un messaggio...">
+            <button onclick="sendMessage()">Invia</button>
+        </div>
+    </div>
+    
+    <script>
+        async function startChatSession() {
+            try {
+                console.log('***START SESSION***');
+                //https://api.example.com/start-session
+                //https://api.salesforce.com/einstein/ai-agent/v1/agents/0XxHu000000qujpKAA/sessions
+                const response = await fetch("https://api.salesforce.com/einstein/ai-agent/v1/agents/0XxHu000000qujpKAA/sessions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        externalSessionKey: "A v4 style guid",
+                        instanceConfig: {
+                            endpoint: "https://ssg-agentforce.my.salesforce.com"
+                        },
+                        tz: "America/Los_Angeles",
+                        variables: [
+                            {
+                                name: "$Context.EndUserLanguage",
+                                type: "Text",
+                                value: "en_US"
+                            }
+                        ],
+                        featureSupport: "Streaming",
+                        streamingCapabilities: {
+                            chunkTypes: [
+                                "Text"
+                            ]
+                        },
+                        bypassUser: true
+                    })
+                });
+                
+                const data = await response.json();
+                console.log("Sessione avviata:", data);
+            } catch (error) {
+                console.error("Errore nell'avvio della sessione:", error);
+            }
+        }
+        
+        async function sendMessage() {
+            console.log('***SEND MESSAGE***');
+            const input = document.getElementById("chatInput");
+            const message = input.value.trim();
+            if (message === "") return;
+            
+            const chatMessages = document.getElementById("chatMessages");
+            const messageElement = document.createElement("div");
+            messageElement.classList.add("message", "user-message");
+            messageElement.textContent = message;
+            chatMessages.appendChild(messageElement);
+            
+            input.value = "";
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Esempio di chiamata REST API
+            try {
+                const response = await fetch("https://api.example.com/chatbot", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ message })
+                });
+                
+                const data = await response.json();
+                const botMessageElement = document.createElement("div");
+                botMessageElement.classList.add("message", "bot-message");
+                botMessageElement.textContent = data.reply || "Risposta non disponibile";
+                chatMessages.appendChild(botMessageElement);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            } catch (error) {
+                console.error("Errore nella chiamata API:", error);
+            }
+        }
+        
+        // Avvia la sessione quando la pagina è caricata
+        window.onload = startChatSession;
+    </script>
+</body>
+</html>
