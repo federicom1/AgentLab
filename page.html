@@ -90,6 +90,8 @@
                 //https://api.salesforce.com/einstein/ai-agent/v1/agents/0XxHu000000qujpKAA/sessions
                 const response = await fetch("https://api.salesforce.com/einstein/ai-agent/v1/agents/0XxHu000000qujpKAA/sessions", {
                     method: "POST",
+                    mode : "cors",
+                    credentials : "include",
                     headers: {
                         "Content-Type": "application/json"
                     },
