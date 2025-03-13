@@ -85,12 +85,12 @@
     <script>
         async function startChatSession() {
             try {
-                console.log('***START SESSION 13***');
+                console.log('***START SESSION 14***');
                 //https://api.example.com/start-session
                 //https://api.salesforce.com/einstein/ai-agent/v1/agents/0XxHu000000qujpKAA/sessions
                 const response = await fetch("https://api.salesforce.com/einstein/ai-agent/v1/agents/0XxHu000000qujpKAA/sessions", {
                     method: "POST",
-                    mode : "no-cors",
+                    mode : "cors",
                     headers: {
                         "Authorization":"Bearer eyJ0bmsiOiJjb3JlL3Byb2QvMDBESHUwMDAwMEdORk10TUFQIiwidmVyIjoiMS4wIiwia2lkIjoiQ09SRV9BVEpXVC4wMERIdTAwMDAwR05GTXQuMTczNzM4NjQ1NjM3MiIsInR0eSI6InNmZGMtY29yZS10b2tlbiIsInR5cCI6IkpXVCIsImFsZyI6IlJTMjU2In0.eyJzY3AiOiJzZmFwX2FwaSBjaGF0Ym90X2FwaSBhcGkiLCJzdWIiOiJ1aWQ6MDA1SHUwMDAwMFJ3dVIwSUFKIiwicm9sZXMiOltdLCJpc3MiOiJodHRwczovL3NzZy1hZ2VudGZvcmNlLm15LnNhbGVzZm9yY2UuY29tIiwiY2xpZW50X2lkIjoiM01WRzlWVGZwSm14ZzF5Z2hDdmZOVm92YkZhY001ank1S05UbnRJMDZGWFUxMktIU05ScTA1SU1Gcnp5bDlfRVhDVFc1R2RpRW1GNzJiemZKcEN4MyIsImNkcF90ZW5hbnQiOiJhMzYwL3Byb2QvYjVlZTViYjViY2E4NGM0ZGFhNTE2NjVmOWQ0NzRhZjMiLCJhdWQiOlsiaHR0cHM6Ly9hcGkuc2FsZXNmb3JjZS5jb20iLCJodHRwczovL3NzZy1hZ2VudGZvcmNlLm15LnNhbGVzZm9yY2UuY29tIl0sIm5iZiI6MTc0MTg4MzMwNiwibXR5Ijoib2F1dGgiLCJzZmFwX3JoIjoiYm90LXN2Yy1sbG06YXdzLXByb2Q4LWNhY2VudHJhbDEvZWluc3RlaW4sYm90LXN2Yy1sbG0vQ29waWxvdFV0dGVyYW5jZUFuYWx5c2lzOmF3cy1wcm9kMS11c2Vhc3QxL2VpbnN0ZWluLGJvdC1zdmMtbGxtL1NhbGVzRW1haWxBc3Npc3RhbnQ6YXdzLXByb2QxLXVzZWFzdDEvZWluc3RlaW4sYm90LXN2Yy1sbG0vRWluc3RlaW5HUFQ6YXdzLXByb2QxLXVzZWFzdDEvZWluc3RlaW4sYm90LXN2Yy1sbG0vRURDOmF3cy1wcm9kMS11c2Vhc3QxL2VpbnN0ZWluLGVpbnN0ZWluLXRyYW5zY3JpYmUvRWluc3RlaW5HUFQ6YXdzLXByb2QxLXVzZWFzdDEvZWluc3RlaW4sbXZzL0VEQzphd3MtcHJvZDEtdXNlYXN0MS9laW5zdGVpbixlaW5zdGVpbi1haS1nYXRld2F5L0VpbnN0ZWluR1BUOmF3cy1wcm9kMS11c2Vhc3QxL2VpbnN0ZWluLGVpbnN0ZWluLWFpLWdhdGV3YXkvRURDOmF3cy1wcm9kMS11c2Vhc3QxL2VpbnN0ZWluIiwic2ZpIjoiMDJmY2I2NzQxNTAyODM1MjYyYzg1YzM5YjBhYzlhNWUyMDg4MDA4ODQ3MzQxYjA2MzRkOWY1NjU4OTY2OWE5YyIsInNmYXBfb3AiOiJFaW5zdGVpbkhhd2tpbmdDMkNFbmFibGVkLEVHcHRGb3JEZXZzQXZhaWxhYmxlLEVpbnN0ZWluR2VuZXJhdGl2ZVNlcnZpY2UsVGFibGVhdU1ldHJpY0Jhc2ljcyIsImhzYyI6ZmFsc2UsImNkcF91cmwiOiJodHRwczovL2EzNjAuY2RwLmNkcDMuYXdzLXByb2QxLXVzZWFzdDEuYXdzLnNmZGMuY2wiLCJleHAiOjE3NDE4ODUxMjEsImlhdCI6MTc0MTg4MzMyMX0.H5RvcFFg6kuaKqFtnOa9VNh_HG_NCd2i3PT6PY9jzYc0tLSm41tQIFLVnOayWgQYqXZpEw1NijnfQI56UFpgGvpgy7dnWJmnrUYDjwINteJIFSJqYjPCLordvlaxnRWXqski1Ush7SKqvcs76AuxsitKGR7MxK1JbtgbyXKPCl3C-lAhiIcs09YWX9VAROczRuzf0tJOw5jVhvIpnRqXGhPhVOcPNx4wz1L5mGO0FoNtigvUkKY-C71nEchbQT7pAPMGbmn55459ze17qTl0YMbFwy3zOe3zrClghHFTx8XAfkVfUHvDdCu0o1-J7WoCrlz62DNdZ1WrlDdhA34oeA",
                         "Content-Type": "application/json"
