@@ -85,7 +85,7 @@
     <script>
         async function startChatSession() {
             try {
-                console.log('***START SESSION 16***');
+                console.log('***START SESSION 17***');
                 //https://api.example.com/start-session
                 //https://api.salesforce.com/einstein/ai-agent/v1/agents/0XxHu000000qujpKAA/sessions
                 const response_0 = await fetch("https://login.salesforce.com/services/oauth2/token", {
@@ -95,7 +95,7 @@
                         "Host": "https://login.salesforce.com",
                         "Content-Type": "application/x-www-form-urlencoded"
                     },
-                    body: '{"grant_type":"password","client_id":"3MVG9VTfpJmxg1yghCvfNVovbFacM5jy5KNTntI06FXU12KHSNRq05IMFrzyl9_EXCTW5GdiEmF72bzfJpCx3","client_secret":"AF63160C4D3C3734A6C4B17ACC794DC27F489F26E02F0A76BD8580BED10CF6F8","username":"federico.munafo@sdo-soprasteria.com","password":"SopraSteriaAI_25"}'
+                    body: '{"grant_type":"client_credentials","client_id":"3MVG9VTfpJmxg1yghCvfNVovbFacM5jy5KNTntI06FXU12KHSNRq05IMFrzyl9_EXCTW5GdiEmF72bzfJpCx3","client_secret":"AF63160C4D3C3734A6C4B17ACC794DC27F489F26E02F0A76BD8580BED10CF6F8"}'
                 });
 
                 /*const response = await fetch("https://api.salesforce.com/einstein/ai-agent/v1/agents/0XxHu000000qujpKAA/sessions", {
