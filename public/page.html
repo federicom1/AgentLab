@@ -73,6 +73,7 @@
 <body>
     <h1>Benvenuto nella Customer Community</h1>
     <p>Connettiti con altri utenti e ottieni supporto in tempo reale attraverso la nostra chat!</p>
+    <p id="tokenDisplay">Il token verrà mostrato qui.</p>
     
     <div class="chat-container">
         <div class="chat-messages" id="chatMessages"></div>
@@ -83,6 +84,68 @@
     </div>
     
     <script>
+
+        async function getSalesforceToken() {
+            console.log('***getSalesforceToken with proxy***');
+            const url = "http://localhost:3001/proxy/salesforce-token";
+        
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+        
+                if (!response.ok) {
+                    throw new Error(`Errore nella richiesta: ${response.status} ${response.statusText}`);
+                }
+        
+                const data = await response.json();
+                console.log("Token ricevuto:", data);
+                document.getElementById("tokenDisplay").innerText = `Token: ${data.access_token}`;
+            } catch (error) {
+                console.error("Errore durante la chiamata al proxy:", error);
+            }
+        }
+
+        async function getSalesforceTokenNoProxy() {
+            console.log('***getSalesforceToken 1***');
+            /* AgentForce Org*/
+            const url = "https://ssg-agentforce.my.salesforce.com/services/oauth2/token";
+            const clientId = "3MVG9VTfpJmxg1yghCvfNVovbFacM5jy5KNTntI06FXU12KHSNRq05IMFrzyl9_EXCTW5GdiEmF72bzfJpCx3";
+            const clientSecret = "AF63160C4D3C3734A6C4B17ACC794DC27F489F26E02F0A76BD8580BED10CF6F8";
+        
+            try {
+                const body = new URLSearchParams({
+                    grant_type: "client_credentials",
+                    client_id: clientId,
+                    client_secret: clientSecret
+                });
+        
+                console.log("Corpo della richiesta:", body.toString());
+        
+                const response = await fetch(url, {
+                    method: "POST",
+                    mode : "no-cors",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: body
+                });
+        
+                if (!response.ok) {
+                    throw new Error(`Errore nella richiesta: ${response.status} ${response.statusText}`);
+                }
+        
+                //const data; = await response.json();
+                console.log("Token ricevuto:", response);
+                return data;
+            } catch (error) {
+                console.error("Errore durante la chiamata all'endpoint Salesforce:", error);
+            }
+        }
+
         async function startChatSession() {
             try {
                 console.log('***START SESSION 17***');
@@ -151,7 +214,7 @@
         }
         
         // Avvia la sessione quando la pagina è caricata
-        window.onload = startChatSession;
+        window.onload = getSalesforceToken;//startChatSession;
     </script>
 </body>
 </html>

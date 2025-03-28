@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/federicom1/AgentLab#readme",
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "node-fetch": "^3.3.2"
   }
 }
