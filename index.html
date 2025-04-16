@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            text-align: center;
+            padding: 20px;
+        }
+        .chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-messages {
+            height: 250px;
+            overflow-y: auto;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        .message {
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            max-width: 80%;
+        }
+        .user-message {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+        }
+        .bot-message {
+            background-color: #e0e0e0;
+            color: black;
+            align-self: flex-start;
+        }
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+            background: #f9f9f9;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+        .chat-input button {
+            margin-left: 10px;
+            padding: 8px 12px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salesforce OAuth2</title>
+</head>
+<body>
+    <h1>Autenticazione Salesforce</h1>
+    <button onclick="startChatSession()">Avvia Chat</button>
+	
+	 <div class="chat-container">
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Scrivi un messaggio...">
+            <button onclick="sendMessage()">Invia</button>
+        </div>
+    </div>
+
+    <script>
+        async function startChatSession() {
+            try {
+                const response = await fetch("http://localhost:3000/get-token", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.token && data.session) {
+                    console.log("✅ Access Token:", data.token.access_token);
+                    console.log("✅ Sessione creata:", data.session);
+                    alert("Sessione Einstein avviata con successo!");
+                } else {
+                    console.error("Errore nella risposta:", data);
+                }
+
+            } catch (error) {
+                console.error("❌ Errore durante l'avvio della sessione:", error);
+            }
+        }
+    </script>
+</body>
+</html>
