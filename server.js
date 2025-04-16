@@ -15,7 +15,9 @@ const TOKENURLSDO = "https://ssg-agentforce.my.salesforce.com/services/oauth2/to
 
 const AGENT_ID = '0XxHu000000qujpKAA';
 const DOMAIN = 'ssg-agentforce.my.salesforce.com';
-const SESSION_ID=1;
+var SESSION_ID=1;
+var ACCESS_TOKEN = '';
+var SEQUENCE_ID = 0;
 
 app.post("/get-token", async (req, res) => {
   try {
@@ -31,6 +33,7 @@ app.post("/get-token", async (req, res) => {
     });
 
     const accessToken = tokenResponse.data.access_token;
+    ACCESS_TOKEN = accessToken;
 
     // 2. Crea sessione Einstein
     const sessionResponse = await axios.post(
@@ -54,6 +57,7 @@ app.post("/get-token", async (req, res) => {
     );
 
     const sessionId = sessionResponse.data.sessionId;
+    SESSION_ID = sessionId;
 
     console.log('Agent Response: ',sessionResponse.data.messages);
     var mess = sessionResponse.data.messages[0].message;
@@ -62,27 +66,6 @@ app.post("/get-token", async (req, res) => {
       const agentMessage = mess;//"Ciao! Come posso aiutarti oggi?";
       res.json({ agentMessage });
     });
-
-    sequenceId = 1;
-    const response = await axios.post(
-        `https://api.salesforce.com/einstein/ai-agent/v1/sessions/${sessionId}/messages/stream`,
-        {
-          message: {
-            sequenceId: sequenceId,
-            type: "Text",
-            text: "I'm Simone, how are you?"
-          }
-        },
-        {
-          headers: {
-            "Accept": "text/event-stream",
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${accessToken}`
-          }
-        }
-      );
-  
-      console.log('Message sent successfully:', response.data);
 
     res.json({
       token: tokenResponse.data,
@@ -99,9 +82,34 @@ app.post("/send-message", async (req, res) => {
   try {
     const { message } = req.body; // Ottieni il messaggio dal corpo della richiesta
     console.log("Messaggio ricevuto dal frontend:", message);
+    console.log("SESSION_ID:", SESSION_ID);
+    console.log("SEQUENCE_ID:", SEQUENCE_ID);
+    console.log("ACCESS_TOKEN:", ACCESS_TOKEN);
+    
+    SEQUENCE_ID++;
 
-    // Simula una risposta del bot o invia il messaggio a Salesforce Einstein
-    const reply = `Hai detto: "${message}". Come posso aiutarti?`;
+    const response = await axios.post(
+      `https://api.salesforce.com/einstein/ai-agent/v1/sessions/${SESSION_ID}/messages`,
+      {
+        message: {
+          sequenceId: SEQUENCE_ID,//sequenceId,
+          type: "Text",
+          text: message
+        }
+      },
+      {
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${ACCESS_TOKEN}`
+        }
+      }
+    );
+
+    console.log('Message sent successfully:', response.data.messages[0].message);
+
+    //Get the response from the agent and send it to the frontend
+    const reply = response.data.messages[0].message;//`Hai detto: "${message}". Come posso aiutarti?`;
 
     // Rispondi al frontend con il messaggio del bot
     res.json({ reply });
