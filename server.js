@@ -1,3 +1,4 @@
+console.log("Avvio del server...");
 require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
@@ -54,9 +55,14 @@ app.post("/get-token", async (req, res) => {
 
     const sessionId = sessionResponse.data.sessionId;
 
-    console.log('sessionResponse',sessionResponse.messages);
-    console.log('sessionResponse',sessionResponse.data.messages);
-    console.log('sessionResponse',sessionResponse.data.messagesStream);
+    console.log('Agent Response: ',sessionResponse.data.messages);
+    var mess = sessionResponse.data.messages[0].message;
+    console.log('Agent message: ',mess);
+    app.post("/get-agent-message", (req, res) => {
+      const agentMessage = mess;//"Ciao! Come posso aiutarti oggi?";
+      res.json({ agentMessage });
+    });
+
     sequenceId = 1;
     const response = await axios.post(
         `https://api.salesforce.com/einstein/ai-agent/v1/sessions/${sessionId}/messages/stream`,
@@ -86,6 +92,22 @@ app.post("/get-token", async (req, res) => {
   } catch (error) {
     console.error('❌ Errore:', error.response?.data || error.message);
     res.status(500).json({ error: error.response?.data || error.message });
+  }
+});
+
+app.post("/send-message", async (req, res) => {
+  try {
+    const { message } = req.body; // Ottieni il messaggio dal corpo della richiesta
+    console.log("Messaggio ricevuto dal frontend:", message);
+
+    // Simula una risposta del bot o invia il messaggio a Salesforce Einstein
+    const reply = `Hai detto: "${message}". Come posso aiutarti?`;
+
+    // Rispondi al frontend con il messaggio del bot
+    res.json({ reply });
+  } catch (error) {
+    console.error("Errore durante l'elaborazione del messaggio:", error);
+    res.status(500).json({ error: "Errore interno del server" });
   }
 });
 
