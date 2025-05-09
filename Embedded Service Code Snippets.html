@@ -12,6 +12,7 @@
 <script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
 <script type='text/javascript'>
 	var initESW = function(gslbBaseURL) {
+		console.log('QUI');
 		embedded_svc.settings.displayHelpButton = true; //Or false
 		embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
 
@@ -49,7 +50,7 @@
 			}
 		);
 	};
-
+	console.log('QUO');
 	if (!window.embedded_svc) {
 		var s = document.createElement('script');
 		s.setAttribute('src', 'https://ssg-agentforce.my.salesforce.com/embeddedservice/5.0/esw.min.js');
@@ -57,8 +58,10 @@
 			initESW(null);
 		};
 		document.body.appendChild(s);
+		console.log('QUA');
 	} else {
 		initESW('https://service.force.com');
+		console.log('PAPERINO');
 	}
 </script>
 </html>
